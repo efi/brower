@@ -24,7 +24,7 @@ module Brower
     #TODO: preconfigure and adhere to more settings from http://bower.io/docs/config/
     bower_json = MultiJson.load File.read bower_json_file_path
     bowerdir = settings["directory"]
-    Dir.mkdir bowerdir unless Dir.exists? bowerdir
+    Dir.mkdir bowerdir unless Dir.exists?(bowerdir) || (bower_json['dependencies']||[])==[]
     registries = settings["registry"]["search"]
 
     (bower_json['dependencies']||[]).each do |pkg, details|
