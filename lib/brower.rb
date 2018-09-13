@@ -3,7 +3,7 @@ require "open-uri"
 
 module Brower
 
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
 
   def self.install dir=nil, depth=0
 
@@ -14,17 +14,17 @@ module Brower
     bowerrc_file_path = File.join dir, ".bowerrc"
     bower_json_file_path = File.join dir,"bower.json"
     return unless File.exist? bower_json_file_path
-    bowerrc = MultiJson.load File.read bowerrc_file_path if File.exists? bowerrc_file_path 
+    bowerrc = MultiJson.load File.read bowerrc_file_path if File.exist? bowerrc_file_path 
     settings = {
         "directory"=>"bower_components",
         "registry"=>{
-          "search"=>["https://bower.herokuapp.com"]
+          "search"=>["https://registry.bower.io"]
         }
       }.merge(bowerrc||{})
     #TODO: preconfigure and adhere to more settings from http://bower.io/docs/config/
     bower_json = MultiJson.load File.read bower_json_file_path
     bowerdir = settings["directory"]
-    Dir.mkdir bowerdir unless Dir.exists?(bowerdir) || (bower_json['dependencies']||[])==[]
+    Dir.mkdir bowerdir unless Dir.exist?(bowerdir) || (bower_json['dependencies']||[])==[]
     registries = settings["registry"]["search"]
 
     (bower_json['dependencies']||[]).each do |pkg, details|
